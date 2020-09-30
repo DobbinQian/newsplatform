@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.qdbgame.newsplatform</groupId>
+    <artifactId>newsplatform</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>newsplatform-api-commons</module>
+        <module>newsplatform-user-service</module>
+        <module>newsplatform-news-service</module>
+        <module>newsplatform-comment-service</module>
+        <module>newsplatform-news-crawler</module>
+        <module>newsplatform-gateway</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <junit.version>4.13</junit.version>
+        <lombok.version>1.18.12</lombok.version>
+        <log4j.version>1.2.17</log4j.version>
+        <mysql.version>8.0.21</mysql.version>
+        <druid.version>1.1.23</druid.version>
+        <mybatis.spring.boot.version>2.1.3</mybatis.spring.boot.version>
+
+        <!-- Apache Dubbo -->
+<!--        <dubbo.version>2.7.8</dubbo.version>-->
+<!--        <curator.version>4.0.1</curator.version>-->
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <!--spring cloud 阿里巴巴-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>2.2.2.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--mysql-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <!--junit-->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <!--log4j-->
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <!--spring boot 2.2.3-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>2.3.3.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--druid-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!--Apache Maven Project Info Reports Plugin-->
+            <dependency>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.1.1</version>
+                <type>maven-plugin</type>
+            </dependency>
+            <!--mybatis-->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.spring.boot.version}</version>
+            </dependency>
+
+<!--            <dependency>-->
+<!--                <groupId>org.apache.dubbo</groupId>-->
+<!--                <artifactId>dubbo-dependencies-bom</artifactId>-->
+<!--                <version>${dubbo.version}</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--                <exclusions>-->
+<!--                    <exclusion>-->
+<!--                        <groupId>org.springframework</groupId>-->
+<!--                        <artifactId>spring-framework-bom</artifactId>-->
+<!--                    </exclusion>-->
+<!--                </exclusions>-->
+<!--            </dependency>-->
+
+<!--            <dependency>-->
+<!--                <groupId>org.apache.dubbo</groupId>-->
+<!--                <artifactId>dubbo-spring-boot-starter</artifactId>-->
+<!--                <version>${dubbo.version}</version>-->
+<!--            </dependency>-->
+
+<!--            <dependency>-->
+<!--                <groupId>org.apache.dubbo</groupId>-->
+<!--                <artifactId>dubbo-spring-boot-actuator</artifactId>-->
+<!--                <version>${dubbo.version}</version>-->
+<!--            </dependency>-->
+
+<!--            <dependency>-->
+<!--                <groupId>org.apache.dubbo</groupId>-->
+<!--                <artifactId>dubbo</artifactId>-->
+<!--                <version>${dubbo.version}</version>-->
+<!--                <exclusions>-->
+<!--                    <exclusion>-->
+<!--                        <groupId>org.springframework</groupId>-->
+<!--                        <artifactId>spring-context</artifactId>-->
+<!--                    </exclusion>-->
+<!--                </exclusions>-->
+<!--            </dependency>-->
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                    <addResources>true</addResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,6 @@
+# Project exclude paths
+/newsplatform-api-commons/target/
+/newsplatform-comment-service/target/
+/newsplatform-gateway/target/
+/newsplatform-news-service/target/
+/newsplatform-user-service/target/

@@ -1,0 +1,33 @@
+server:
+  port: 9004
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: crawler-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 119.3.175.0:8848 #配置Nacos地址
+    sentinel:
+      transport:
+        dashboard: 119.3.175.0:8080
+        #port: 8719  #应用与Sentinel控制台交互的端口，应用本地会起一个该端口占用的HttpServer
+
+dubbo:
+  scan:
+    basePackages: com.qdbgame.newsplatform.service
+  application:
+    name: news-service
+  registry:
+    address: nacos://119.3.175.0:8848
+  protocol:
+    name: dubbo
+    port: -1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
