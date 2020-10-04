@@ -1,11 +1,11 @@
 server:
-  port: 9001
+  port: 9057
 
 spring:
   main:
     allow-bean-definition-overriding: true
   application:
-    name: user-service
+    name: gateway
   cloud:
     nacos:
       discovery:
@@ -15,12 +15,3 @@ spring:
         server-addr: nacos-headless
         file-extension: yml
         namespace: 4a698af5-7c6d-4eaf-87e0-20b61a69e794
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-
-mybatis:
-  mapper-locations: classpath*:mapper/*.xml

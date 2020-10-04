@@ -22,20 +22,13 @@ public class UserController {
     @DubboReference(check = false)
     private HelloService helloService;
 
-    @Value("${config.apps}")
-    private String apps;
-
-    @GetMapping("/hello")
+    @GetMapping("/user/hello")
     public String hello() {
         return helloService.sayHello("Dubbo!");
     }
 
-    @GetMapping("/config")
-    public String getConfig(){
-        return apps;
-    }
 
-    @GetMapping("/errurl")
+    @GetMapping("/user/errurl")
     @SentinelResource(value = "demoResource",
             fallbackClass = SentinelFallback.class,
             fallback = "fallback")
@@ -44,7 +37,7 @@ public class UserController {
         return "testHotKey success";
     }
 
-    @GetMapping("/hotKey")
+    @GetMapping("/user/hotKey")
     @SentinelResource(value = "demoResource",
             fallbackClass = SentinelFallback.class,
             fallback = "fallback")

@@ -6,67 +6,15 @@ spring:
     allow-bean-definition-overriding: true
   application:
     name: news-service
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/newsplatform_news?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
-    username: root
-    password: qian1234
   cloud:
     nacos:
       discovery:
-        server-addr: 119.3.175.0:8848 #配置Nacos地址
-    sentinel:
-      transport:
-        dashboard: 119.3.175.0:8080
-        #port: 8719  #应用与Sentinel控制台交互的端口，应用本地会起一个该端口占用的HttpServer
-
-seata:
-  enabled: true
-  application-id: ${spring.application.name}
-  tx-service-group: userServiceGroup
-  enable-auto-data-source-proxy: true
-  service:
-    vgroup-mapping:
-      userServiceGroup: default  # 此处key需要与tx-service-group的value一致，否则会报 no available service 'null' found, please make sure registry config correct 异常
-    grouplist:
-      default: 122.152.230.98:8091
-    enable-degrade: false
-    disable-global-transaction: false
-  config:
-    type: nacos
-    nacos:
-      namespace:
-      serverAddr: 119.3.175.0:8848
-      group: SEATA_GROUP
-      userName: ""
-      password: ""
-  registry:
-    type: nacos
-    nacos:
-      application: seata-server  # 此处名称需和 seata server 服务端 application一致,否则会报 no available service 'null' found, please make sure registry config correct 异常
-      server-addr: 119.3.175.0:8848
-      namespace:
-      userName: ""
-      password: ""
-
-dubbo:
-  scan:
-    basePackages: com.qdbgame.newsplatform.service
-  application:
-    name: news-service
-  registry:
-    address: nacos://119.3.175.0:8848
-  protocol:
-    name: dubbo
-    port: -1
-  consumer:
-    check: false
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
+        server-addr: nacos-headless #配置Nacos地址
+        namespace: 4a698af5-7c6d-4eaf-87e0-20b61a69e794
+      config:
+        server-addr: nacos-headless
+        file-extension: yml
+        namespace: 4a698af5-7c6d-4eaf-87e0-20b61a69e794
 
 mybatis:
   mapper-locations: classpath*:mapper/*.xml
