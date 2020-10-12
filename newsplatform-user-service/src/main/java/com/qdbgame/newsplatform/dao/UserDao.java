@@ -1,5 +1,6 @@
 package com.qdbgame.newsplatform.dao;
 
+import com.qdbgame.newsplatform.entities.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -8,5 +9,9 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface UserDao {
-    boolean updateIntegral(@Param("userId")Integer userId,@Param("chValue")Integer chValue);
+    boolean insert(User user);
+
+    boolean update(User user);
+
+    User select(User user);
 }

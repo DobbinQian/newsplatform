@@ -14,18 +14,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class News implements Serializable {
-    private Integer id;
-    private Integer authorId;
+    private Integer newsId;
+    private Integer ownId;
     private String title;
     private String context;
-
-    @Override
-    public String toString() {
-        return "News{" +
-                "id=" + id +
-                ", authorId=" + authorId +
-                ", title='" + title + '\'' +
-                ", context='" + context + '\'' +
-                '}';
-    }
+    private Long creationTime;
+    private String image;
+    private Integer state;
 }

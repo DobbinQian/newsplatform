@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommonResult <T>{
-    Integer code;
-    String message;
-    T data;
+    private Integer code;
+    private String message;
+    private T data;
 
-    CommonResult(Integer code,String message){
+    public CommonResult(Integer code,String message){
         this.code = code;
         this.message = message;
     }

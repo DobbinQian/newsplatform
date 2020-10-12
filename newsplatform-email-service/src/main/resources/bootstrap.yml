@@ -1,19 +1,20 @@
 server:
-  port: 9001
+  port: 9011
+
 
 spring:
   main:
     allow-bean-definition-overriding: true
   application:
-    name: user-service
+    name: email-service
   cloud:
     nacos:
       discovery:
-        #server-addr: nacos-headless
-        server-addr: 182.61.41.33:30048
+        server-addr: nacos-headless
+        #server-addr: 182.61.41.33:30048
         namespace: e03148ea-d078-448e-914c-8fb2b36487a1
       config:
-        #server-addr: nacos-headless
-        server-addr: 182.61.41.33:30048
+        server-addr: nacos-headless
+        #server-addr: 182.61.41.33:30048
         file-extension: yml
         namespace: e03148ea-d078-448e-914c-8fb2b36487a1

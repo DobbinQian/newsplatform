@@ -4,15 +4,54 @@
 <mapper namespace="com.qdbgame.newsplatform.dao.NewsDao">
 
     <resultMap id="BaseResultMap" type="com.qdbgame.newsplatform.entities.News">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="author_id" property="authorId" jdbcType="INTEGER"/>
-        <result column="title" property="password" jdbcType="VARCHAR"/>
-        <result column="context" property="email" jdbcType="VARCHAR"/>
+        <id column="news_id" property="newsId"/>
+        <result column="news_own_id" property="ownId"/>
+        <result column="news_title" property="title"/>
+        <result column="news_context" property="context"/>
+        <result column="creation_time" property="creationTime"/>
+        <result column="news_image" property="image"/>
+        <result column="news_state" property="state"/>
     </resultMap>
 
-    <insert id="insertNews" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.qdbgame.newsplatform.entities.News">
-        INSERT INTO news (author_id,title,context)
-        VALUE (#{authorId},#{title},#{context})
+    <insert id="insert" parameterType="com.qdbgame.newsplatform.entities.News">
+        INSERT INTO news (news_own_id,news_title,news_context,creation_time,news_image)
+        VALUES (#{ownId},#{title},#{context},#{creationTime},#{image})
     </insert>
+
+    <update id="update" parameterType="com.qdbgame.newsplatform.entities.News">
+        UPDATE news
+        <set>
+            <if test="ownId != null and ownId != ''">
+                news_own_id = #{ownId}
+            </if>
+            <if test="title != null and title != ''">
+                news_title = #{title}
+            </if>
+            <if test="context != null and context != ''">
+                news_context = #{context}
+            </if>
+            <if test="image != null and image != ''">
+                news_image = #{image}
+            </if>
+            <if test="state != null and state != ''">
+                news_state = #{state}
+            </if>
+        </set>
+        WHERE news_id = #{newsId}
+    </update>
+
+    <select id="selectListByPage" resultMap="BaseResultMap">
+        SELECT news_id,news_title,news_image
+        FROM news
+        WHERE state = 1
+        ORDER BY creation_time
+        LIMIT pageNo,pageSize
+    </select>
+
+    <select id="selectNewsById" resultMap="BaseResultMap">
+        SELECT *
+        FROM news
+        WHERE news_id = #{newsId}
+    </select>
 
 </mapper>
