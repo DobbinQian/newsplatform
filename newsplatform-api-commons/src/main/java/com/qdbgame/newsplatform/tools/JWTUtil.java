@@ -62,7 +62,7 @@ public class JWTUtil {
      */
     public static String getUserInfo(String token) {
         DecodedJWT decodedJWT = JWT.decode(token);
-        String userId = decodedJWT.getClaim("userId").asString();
+        String userId = decodedJWT.getClaim("userId").asInt().toString();
         return userId;
     }
 }

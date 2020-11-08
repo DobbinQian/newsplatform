@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.qdbgame.newsplatform.dao.ReviewMapper">
+
+    <resultMap id="BaseResultMap" type="com.qdbgame.newsplatform.entities.Review">
+        <id column="review_id" property="reviewId"/>
+        <result column="news_id" property="newsId"/>
+        <result column="review_user_id" property="reviewUserId"/>
+        <result column="state" property="state"/>
+        <result column="review_describe" property="describe"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.qdbgame.newsplatform.entities.Review">
+        INSERT INTO review (news_id,review_user_id,state,review_describe)
+        VALUES (#{newsId},#{reviewUserId},#{state},#{describe})
+    </insert>
+</mapper>

@@ -1,6 +1,3 @@
-server:
-  port: 9002
-
 spring:
   main:
     allow-bean-definition-overriding: true
@@ -10,11 +7,11 @@ spring:
     nacos:
       discovery:
         server-addr: nacos-headless #配置Nacos地址
-        namespace: 4a698af5-7c6d-4eaf-87e0-20b61a69e794
+        namespace: e03148ea-d078-448e-914c-8fb2b36487a1
       config:
         server-addr: nacos-headless
         file-extension: yml
-        namespace: 4a698af5-7c6d-4eaf-87e0-20b61a69e794
+        namespace: e03148ea-d078-448e-914c-8fb2b36487a1
 
 mybatis:
   mapper-locations: classpath*:mapper/*.xml

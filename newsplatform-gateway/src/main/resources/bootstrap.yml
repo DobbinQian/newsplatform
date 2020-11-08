@@ -6,11 +6,11 @@ spring:
   cloud:
     nacos:
       discovery:
-        #server-addr: nacos-headless #配置Nacos地址
-        server-addr: 182.61.41.33:30048
+        server-addr: nacos-headless #配置Nacos地址
+        #server-addr: 182.61.41.33:30048
         namespace: e03148ea-d078-448e-914c-8fb2b36487a1
       config:
-        #server-addr: nacos-headless
-        server-addr: 182.61.41.33:30048
+        server-addr: nacos-headless
+        #server-addr: 182.61.41.33:30048
         file-extension: yml
         namespace: e03148ea-d078-448e-914c-8fb2b36487a1

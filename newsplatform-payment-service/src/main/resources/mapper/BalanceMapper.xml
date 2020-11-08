@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.qdbgame.newsplatform.dao.BalanceMapper">
+
+    <resultMap id="BaseResultMap" type="com.qdbgame.newsplatform.entities.Balance">
+        <result column="user_id" property="userId"/>
+        <result column="balance" property="balance"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.qdbgame.newsplatform.entities.Balance">
+        INSERT INTO account_balance (user_id,balance)
+        VALUES (#{userId},#{balance})
+    </insert>
+
+    <update id="updateBalanceByBill" parameterType="com.qdbgame.newsplatform.entities.Bill">
+        UPDATE account_balance
+        SET balance=balance+#{transactionAmount}
+        WHERE user_id = #{payeeId};
+        UPDATE account_balance
+        SET balance=balance-#{transactionAmount}
+        WHERE user_id = #{payerId}
+    </update>
+
+    <select id="getBalanceByUserId">
+        SELECT balance
+        FROM account_balance
+        WHERE user_id = #{userId}
+    </select>
+
+
+</mapper>

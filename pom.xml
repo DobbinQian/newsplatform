@@ -16,6 +16,9 @@
         <module>newsplatform-news-crawler</module>
         <module>newsplatform-gateway</module>
         <module>newsplatform-email-service</module>
+        <module>newsplatform-payment-service</module>
+        <module>newsplatform-transaction-service</module>
+        <module>newsplatform-order-service</module>
     </modules>
 
     <properties>
@@ -102,6 +105,12 @@
                 <groupId>com.github.penggle</groupId>
                 <artifactId>kaptcha</artifactId>
                 <version>${kaptcha}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.74</version>
             </dependency>
 
         </dependencies>

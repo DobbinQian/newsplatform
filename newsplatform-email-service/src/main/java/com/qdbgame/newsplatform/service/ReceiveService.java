@@ -26,7 +26,7 @@ public class ReceiveService {
         Context context = new Context();
         context.setVariable("username",arr[2]);
         context.setVariable("email",arr[1]);
-        context.setVariable("link",arr[0]);
+        context.setVariable("verificationCode",arr[0]);
         //这里要注意了，/mail/RegisterEmail，测试的时候没有错，但是当打包jar包后服务器运行就会出错
         //详解：https://cloud.tencent.com/developer/article/1333077
         String emailContent = templateEngine.process("mail/RegisterEmail",context);

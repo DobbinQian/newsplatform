@@ -1,7 +1,3 @@
-server:
-  port: 9011
-
-
 spring:
   main:
     allow-bean-definition-overriding: true

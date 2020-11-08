@@ -24,10 +24,10 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
         </dependency>
         <!--seata-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+        </dependency>
         <!--dubbo-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -85,6 +85,7 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
         </dependency>
+
     </dependencies>
 
     <build>

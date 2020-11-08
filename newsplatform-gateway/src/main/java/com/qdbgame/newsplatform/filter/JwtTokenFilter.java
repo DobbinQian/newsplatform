@@ -11,6 +11,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -21,6 +22,7 @@ import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
+import java.util.function.Consumer;
 
 /**
  * @author ：QDB
@@ -58,7 +60,13 @@ public class JwtTokenFilter implements GlobalFilter, Ordered {
         }
 
         String userId = JWTUtil.getUserInfo(token);
-        ServerHttpRequest mutableReq = serverHttpRequest.mutate().header("userId", userId).build();
+
+        System.out.println(userId);
+
+        Consumer<HttpHeaders> httpHeaders = httpHeader -> {
+            httpHeader.set("userId", userId);
+        };
+        ServerHttpRequest mutableReq = exchange.getRequest().mutate().headers(httpHeaders).build();
         ServerWebExchange mutableExchange = exchange.mutate().request(mutableReq).build();
 
         return chain.filter(mutableExchange);

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.qdbgame.newsplatform.dao.BillMapper">
+
+    <resultMap id="BaseResultMap" type="com.qdbgame.newsplatform.entities.Bill">
+        <result column="bill_id" property="billId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="creation_time" property="creationTime"/>
+        <result column="transaction_amount" property="transactionAmount"/>
+        <result column="payee_id" property="payeeId"/>
+        <result column="payer_id" property="payerId"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.qdbgame.newsplatform.entities.Bill">
+        INSERT INTO bill
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            order_id,
+            creation_time,
+            transaction_amount,
+            payee_id,
+            payer_id,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            #{orderId},
+            #{creationTime},
+            #{transactionAmount},
+            #{payeeId},
+            #{payerId},
+        </trim>
+    </insert>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT *
+        FROM bill
+        <where>
+            <choose>
+                <when test="type = 0">
+                    payee_id = #{userId}
+                </when>
+                <when test="type = 1">
+                    payer_id = #{userId}
+                </when>
+                <otherwise>
+                    payer_id = #{userId}
+                </otherwise>
+            </choose>
+        </where>
+        LIMIT #{pageNo},#{pageSize}
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT *
+        FROM bill
+        WHERE bill_id = #{billId}
+    </select>
+
+</mapper>

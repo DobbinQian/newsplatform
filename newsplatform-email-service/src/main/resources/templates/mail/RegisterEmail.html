@@ -18,7 +18,7 @@
                                 <div style="display: inline-block; padding-left: 12px;"><span><strong>激活帐号：</strong>&nbsp;&nbsp;<span th:text="${username}"/></span><span><br></span><span><strong>即将激活邮箱地址：</strong><span><span th:text="${email}"/></span><br></span>
                                 </div>
                             </div>
-                            <div style="display: flex; justify-content: space-around; margin: 0px 48px 20px 48px;"><a th:href="@{http://www.qdbgame.com/user/registerVerify/${verificationCode}}" style="display: inline-block; text-decoration: none; color: #fff; background: #fe7300; padding: .3em 1.6em; font-size: 16px; border-radius: 2px; border: 1px solid #fe7300;">确认激活</a>
+                            <div style="display: flex; justify-content: space-around; margin: 0px 48px 20px 48px;"><a th:href="@{http://www.qdbgame.com/user/loginOrRegister/registerVerify/(${verificationCode})}" style="display: inline-block; text-decoration: none; color: #fff; background: #fe7300; padding: .3em 1.6em; font-size: 16px; border-radius: 2px; border: 1px solid #fe7300;">确认激活</a>
                             </div>
                             <div style="display: flex; flex-direction: column; line-height: 18px;"></div>
                         </div>

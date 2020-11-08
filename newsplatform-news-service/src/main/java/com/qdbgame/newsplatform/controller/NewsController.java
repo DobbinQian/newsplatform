@@ -1,20 +1,18 @@
 package com.qdbgame.newsplatform.controller;
 
-import com.qdbgame.newsplatform.entities.CommonResult;
-import com.qdbgame.newsplatform.entities.News;
+import com.qdbgame.newsplatform.entities.*;
 import com.qdbgame.newsplatform.service.NewsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by QDB on 2020/9/17 13:44
  */
 @RestController
 @Slf4j
+@RequestMapping(value = "/news")
 public class NewsController {
     @Resource
     private NewsService newsService;
@@ -24,67 +22,75 @@ public class NewsController {
      * @param news
      * @return
      */
-    @RequestMapping(value = "news/add",method = RequestMethod.POST)
-    public CommonResult addNews(@RequestBody News news,
-                                @RequestHeader("userId") Integer userId){
-        news.setOwnId(userId);
-        if(!newsService.addNews(news)){
-            return new CommonResult(1,"创建新闻失败");
+    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    public ServerResponse createNews(@RequestHeader(value = "userId")String userId,
+                                     @RequestBody News news){
+
+        if(!newsService.createNews(news,Integer.valueOf(userId))){
+            return ServerResponse.createByError("创建新闻失败");
         }
-        return new CommonResult(0,"创建新闻成功");
+        return ServerResponse.createByCheckSuccess();
     }
 
     /**
-     * 获取新闻列表
-     * @param pageNo
-     * @param pageSize
+     * 审核新闻
+     * @param review
+     * @param userId
      * @return
      */
-    @RequestMapping(value = "news/list",method = RequestMethod.GET)
-    public CommonResult getNewsList(Integer pageNo,
-                                    Integer pageSize,
-                                    @RequestHeader("userId") Integer userId){
-        List<News> result = newsService.getNewsList(pageNo,pageSize);
-        if(result == null){
-            return new CommonResult(-1,"获取新闻列表失败");
+    @RequestMapping(value = "/review",method = RequestMethod.POST)
+    public ServerResponse reviewNews(@RequestHeader(value = "userId")String userId,
+                                     @RequestBody Review review){
+        // TODO 判断是否是管理员
+        if(!newsService.reviewNews(review,Integer.valueOf(userId))){
+            return ServerResponse.createByError("评审失败");
         }
-        return new CommonResult<List<News>>(0,"获取新闻列表成功",result);
+        return ServerResponse.createByCheckSuccess();
     }
+
+    /**
+     * 发布中的新闻
+     * @param pageNo
+     * @param pageSize
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/releasing",method = RequestMethod.GET)
+    public ServerResponse getReleasingNews(@RequestHeader(value = "userId")String userId,
+                                           Integer pageNo,
+                                           Integer pageSize){
+        return ServerResponse.createBySuccess("发布的新闻",newsService.getNewsList(pageNo,pageSize,Integer.valueOf(userId),News.State.RELEASING));
+    }
+
+    /**
+     * 审核中的新闻
+     * @param pageNo
+     * @param pageSize
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/reviewing",method = RequestMethod.GET)
+    public ServerResponse getReviewingNews(@RequestHeader(value = "userId")String userId,
+                                           Integer pageNo,
+                                           Integer pageSize){
+        return ServerResponse.createBySuccess("审核中的新闻",newsService.getNewsList(pageNo,pageSize,Integer.valueOf(userId),News.State.REVIEWING));
+    }
+
 
     /**
      * 获取新闻内容
      * @param newsId
      * @return
      */
-    @RequestMapping(value = "news/context/{newsId}",method = RequestMethod.GET)
-    public CommonResult getNewsContext(@PathVariable Integer newsId){
-        News news = newsService.getNewsInfo(newsId);
+    @RequestMapping(value = "/info/{newsId}",method = RequestMethod.GET)
+    public ServerResponse getNewsInfo(@RequestHeader(value = "userId")Integer userId,
+                                      @PathVariable Integer newsId){
+        News news = newsService.getNewsInfo(newsId,userId);
         if(news == null){
-            return new CommonResult(-1,"新闻不存在,或已经被删除");
+            return ServerResponse.createByError("获取新闻内容失败");
         }
-        return new CommonResult<News>(0,"获取新闻内容成功",news);
+        return ServerResponse.createBySuccess("获取新闻内容成功",news);
     }
-
-    /**
-     * 发布新闻
-     * @param newsId
-     * @return
-     */
-    @RequestMapping(value = "news/publish/{newsId}",method = RequestMethod.GET)
-    public CommonResult publishNews(@PathVariable Integer newsId,
-                                    @RequestHeader("userId") Integer userId){
-        News news = newsService.getNewsInfo(newsId);
-        if(news==null||news.getOwnId()!=userId){
-            return new CommonResult(-1,"新闻发布失败");
-        }
-        news.setState(1);
-        if(!newsService.modifyNewsInfo(news)){
-            return new CommonResult(-1,"新闻发布失败");
-        }
-        return new CommonResult(0,"新闻发布成功");
-    }
-
-
 
 
 }
