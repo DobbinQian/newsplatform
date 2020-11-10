@@ -25,7 +25,7 @@ public class BrowsePermissionServiceImpl implements BrowsePermissionService {
     }
 
     @Override
-    public boolean addBrowsePermission(BrowsePermission browsePermission) {
-        return browsePermissionMapper.insert(browsePermission);
+    public void addBrowsePermission(BrowsePermission browsePermission) {
+        browsePermissionMapper.insert(browsePermission);
     }
 }

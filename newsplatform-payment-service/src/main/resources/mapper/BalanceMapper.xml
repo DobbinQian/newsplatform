@@ -22,7 +22,7 @@
         WHERE user_id = #{payerId}
     </update>
 
-    <select id="getBalanceByUserId">
+    <select id="getBalanceByUserId" resultType="java.lang.Integer">
         SELECT balance
         FROM account_balance
         WHERE user_id = #{userId}

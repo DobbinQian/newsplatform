@@ -7,5 +7,5 @@ package com.qdbgame.newsplatform.tools.trade;
 public interface TradeModifyItem {
     Object modifyItemInfo(Integer itemId,Integer state);
     Object modifyItemInfo(Integer itemId,Integer userId,Integer state);
-    boolean createItem(Integer userId);
+    void createItem(Integer userId);
 }

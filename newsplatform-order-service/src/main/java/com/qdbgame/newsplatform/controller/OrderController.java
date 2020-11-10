@@ -28,31 +28,17 @@ public class OrderController {
     @Resource
     OrderService orderService;
 
-//    @RequestMapping(value = "/add",method = RequestMethod.POST)
-//    public ServerResponse createOrder(Integer goodId,
-//                                      @RequestHeader("userId") Integer userId){
-//        Order order = orderService.createOrder(goodId,userId);
-//        if(order!=null){
-//            return ServerResponse.createByError("订单创建失败");
-//        }
-//        return ServerResponse.createBySuccess("订单创建成功",order);
-//    }
-
     @RequestMapping(value = "/payment",method = RequestMethod.POST)
     public ServerResponse paymentOrder(Integer orderId,
                                      @RequestHeader("userId") Integer userId){
-        if(!orderService.paymentOrder(orderId,userId)){
-            return ServerResponse.createByError("支付失败");
-        }
+        orderService.paymentOrder(orderId,userId);
         return ServerResponse.createByCheckSuccess();
     }
 
     @RequestMapping(value = "/cancel",method = RequestMethod.POST)
     public ServerResponse cancelOrder(Integer orderId,
                                     @RequestHeader("userId") Integer userId){
-        if(!orderService.cancelOrder(orderId,userId)){
-            return ServerResponse.createByError("取消失败");
-        }
+        orderService.cancelOrder(orderId,userId);
         return ServerResponse.createByCheckSuccess();
     }
 
@@ -61,7 +47,6 @@ public class OrderController {
                                   Integer pageSize,
                                   Integer state,
                                   @RequestHeader("userId") Integer userId){
-
         return ServerResponse.createBySuccess("订单列表",orderService.getOrders(pageNo,pageSize,userId,state));
 
     }

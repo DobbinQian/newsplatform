@@ -13,8 +13,8 @@ import com.qdbgame.newsplatform.service.TransactionService;
  */
 public abstract class AbstractAdminTrade<T> extends AbstractTrade<T> implements AdminTrade{
     @Override
-    public boolean adminSell(Integer adminId,Integer number,Integer price,Long startTime, TransactionService transactionService) {
-        return adminCreateGoods(adminId,number,price,startTime,transactionService);
+    public void adminSell(Integer adminId,Integer number,Integer price,Long startTime, TransactionService transactionService) {
+        adminCreateGoods(adminId,number,price,startTime,transactionService);
     }
 
     @Override
@@ -33,6 +33,6 @@ public abstract class AbstractAdminTrade<T> extends AbstractTrade<T> implements 
         return paymentService.paymentOrder(order);
     }
 
-    protected abstract boolean adminCreateGoods(Integer adminId, Integer number,Integer price,Long startTime,TransactionService transactionService);
+    protected abstract void adminCreateGoods(Integer adminId, Integer number,Integer price,Long startTime,TransactionService transactionService);
     protected abstract void paymentToCreateItem(Integer userId,TradeModifyItem tradeModifyItem);
 }

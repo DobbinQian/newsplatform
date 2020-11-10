@@ -11,9 +11,9 @@ public interface UserService {
 
     Map<String,Object> login(User user);
 
-    boolean register(User user);
+    void register(User user);
 
-    boolean registerActivate(String verificationCode);
+    void registerActivate(String verificationCode);
 
     User getUserInfo(User user);
 }

@@ -40,10 +40,6 @@ public class UserController {
     @RequestMapping(value = "/loginOrRegister/login",method = RequestMethod.POST)
     public ServerResponse login(@RequestBody User user){
         Map<String,Object> resultMap = userService.login(user);
-        if(resultMap==null){
-            return ServerResponse.createByError("邮箱或者密码错误");
-        }
-
         return ServerResponse.createBySuccess("登录成功",resultMap);
     }
 
@@ -54,13 +50,7 @@ public class UserController {
      */
     @RequestMapping(value = "/loginOrRegister/register",method = RequestMethod.POST)
     public ServerResponse register(@RequestBody User user){
-        User userInfo = userService.getUserInfo(user);
-        if(userInfo!=null){
-            return ServerResponse.createByError("这个邮箱已经被注册");
-        }
-        if(!userService.register(user)){
-            return ServerResponse.createByError("注册失败");
-        }
+        userService.register(user);
         return ServerResponse.createByCheckSuccess();
     }
 
@@ -71,9 +61,7 @@ public class UserController {
      */
     @RequestMapping(value = "/loginOrRegister/registerVerify/{verificationCode}",method = RequestMethod.GET)
     public ServerResponse registerVerify(@PathVariable(value = "verificationCode") String verificationCode){
-        if(!userService.registerActivate(verificationCode)){
-            return ServerResponse.createByError("注册失败");
-        }
+        userService.registerActivate(verificationCode);
         return ServerResponse.createByCheckSuccess();
     }
 
@@ -85,10 +73,7 @@ public class UserController {
     @RequestMapping(value = "/userInfo/{userId}",method = RequestMethod.GET)
     public ServerResponse userInfo(@PathVariable(value = "userId") Integer userId){
         User userInfo = userService.getUserInfo(new User(userId,null,null,null));
-        if(userInfo==null){
-            return ServerResponse.createByError("用户不存在");
-        }
-        return ServerResponse.createBySuccess("获取用户信息成功",userInfo);
+        return ServerResponse.createBySuccess("获取用户信息",userInfo);
     }
 
 }

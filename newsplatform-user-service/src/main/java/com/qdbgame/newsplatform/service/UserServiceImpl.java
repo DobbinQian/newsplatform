@@ -7,6 +7,7 @@ import com.qdbgame.newsplatform.tools.JWTUtil;
 import com.qdbgame.newsplatform.tools.RedisTool;
 import com.qdbgame.newsplatform.dao.UserMapper;
 import com.qdbgame.newsplatform.entities.User;
+import com.qdbgame.newsplatform.tools.exception.ResultException;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
     public Map<String,Object> login(User user) {
         User userInfo = userMapper.getUser(user);
         if(userInfo==null){
-            return null;
+            throw new ResultException("邮箱或密码错误！");
         }
         String token = JWTUtil.generateToken(userInfo.getUserId(), secretKey);
         String refreshToken = UUID.randomUUID().toString().replace("-", "");
@@ -64,7 +65,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean register(User user) {
+    public void register(User user) {
+        User userInfo = getUserInfo(user);
+        if(userInfo != null){
+            throw new ResultException("该邮箱已经被注册");
+        }
         System.out.println(rocketMQTemplate.getProducer().getNamesrvAddr());
         // 创建验证码
         String capText = captchaProducer.createText();
@@ -78,20 +83,19 @@ public class UserServiceImpl implements UserService {
         userRedisTool.set(key,user);
         // 调用邮件服务的发送邮件功能,通过消息中间件采用异步请求
         source.output().send(MessageBuilder.withPayload(capText+","+user.getEmail()+","+user.getUsername()).build());
-        return true;
     }
 
     @Override
     @GlobalTransactional
-    public boolean registerActivate(String verificationCode) {
+    public void registerActivate(String verificationCode) {
         String key = "userRegister_"+verificationCode;
         User user = (User)userRedisTool.get(key);
         if(user==null){
-            return false;
+            throw new ResultException("验证码失效，请重新注册！");
         }
         userRedisTool.delete(key);
         userMapper.insert(user);
-        return paymentService.createBalance(user.getUserId());
+        paymentService.createBalance(user.getUserId());
     }
 
     @Override

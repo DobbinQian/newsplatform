@@ -12,9 +12,9 @@ import java.util.List;
 public interface OrderService {
     Order createOrder(Goods goods, Integer userId);
 
-    boolean paymentOrder(Integer orderId, Integer userId);
+    void paymentOrder(Integer orderId, Integer userId);
 
-    boolean cancelOrder(Integer orderId, Integer userId);
+    void cancelOrder(Integer orderId, Integer userId);
 
     List<Order> getOrders(Integer pageNo, Integer pageSize, Integer userId, Integer state);
 

@@ -5,6 +5,8 @@ import com.qdbgame.newsplatform.dao.BillMapper;
 import com.qdbgame.newsplatform.entities.Balance;
 import com.qdbgame.newsplatform.entities.Bill;
 import com.qdbgame.newsplatform.entities.Order;
+import com.qdbgame.newsplatform.tools.exception.ResultException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import java.util.List;
  * @author ：QDB
  * @date ：Created in 2020/10/13 10:07
  */
+
 @DubboService
 public class PaymentServiceImpl implements PaymentService {
 
@@ -28,10 +31,11 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void transfer(Bill bill) {
-        Long t = System.currentTimeMillis();
+        Integer balance = balanceMapper.getBalanceByUserId(bill.getPayerId());
+        if(balance<bill.getTransactionAmount()){
+            throw new ResultException("转账失败,余额不足");
+        }
         balanceMapper.updateBalanceByBill(bill);
-        System.out.println(System.currentTimeMillis()-t);
-        createBill(bill);
     }
 
     @Override
@@ -40,8 +44,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public boolean createBalance(Integer userId) {
-        return balanceMapper.insert(new Balance(userId,0));
+    public void createBalance(Integer userId) {
+        balanceMapper.insert(new Balance(userId,0));
     }
 
     @Override
@@ -63,6 +67,7 @@ public class PaymentServiceImpl implements PaymentService {
         bill.setTransactionAmount(order.getPrice());
         bill.setOrderId(order.getOrderId());
         transfer(bill);
+        createBill(bill);
         return bill;
     }
 }

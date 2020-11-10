@@ -3,6 +3,7 @@ package com.qdbgame.newsplatform.service;
 import com.qdbgame.newsplatform.dao.OrderMapper;
 import com.qdbgame.newsplatform.entities.Goods;
 import com.qdbgame.newsplatform.entities.Order;
+import com.qdbgame.newsplatform.tools.exception.ResultException;
 import com.qdbgame.newsplatform.tools.trade.BrowsePermissionTrade;
 import com.qdbgame.newsplatform.tools.trade.NewsTrade;
 import com.qdbgame.newsplatform.tools.trade.VoucherTrade;
@@ -67,10 +68,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @GlobalTransactional
-    public boolean paymentOrder(Integer orderId, Integer userId) {
+    public void paymentOrder(Integer orderId, Integer userId) {
         Order order = orderMapper.getById(orderId);
-        if(order==null||!order.getConsumerId().equals(userId)||!order.getState().equals(Order.State.NON_PAYMENT)){
-            return false;
+        if(order==null){
+            throw new ResultException("订单不存在！");
+        }else if(!order.getConsumerId().equals(userId)){
+            throw new ResultException("不要帮别人支付好吗！");
+        }else if(!order.getState().equals(Order.State.NON_PAYMENT)){
+            throw new ResultException("该订单已支付或失效!");
         }
         if(order.getGoodsType().equals(Goods.Type.NEWS)){
             newsTrade.payment(orderId,userId,this,paymentService,newsService);
@@ -80,20 +85,21 @@ public class OrderServiceImpl implements OrderService {
         }else if(order.getGoodsType().equals(Goods.Type.VOUCHER)){
             voucherTrade.payment(orderId,userId,this,paymentService,voucherService);
         }else{
-            return false;
+            throw new ResultException("未知的类型！");
         }
         order.setState(Order.State.SUCCESS);
         order.setCreationTime(order.getCreationTime()+"+"+String.valueOf(System.currentTimeMillis()));
         modifyOrder(order);
-        return true;
     }
 
     @Override
     @GlobalTransactional
-    public boolean cancelOrder(Integer orderId, Integer userId) {
+    public void cancelOrder(Integer orderId, Integer userId) {
         Order order = orderMapper.getById(orderId);
-        if(!order.getConsumerId().equals(userId)||!order.getState().equals(Order.State.NON_PAYMENT)){
-            return false;
+        if(!order.getConsumerId().equals(userId)){
+            throw new ResultException("这不是你的订单!");
+        }else if(!order.getState().equals(Order.State.NON_PAYMENT)){
+            throw new ResultException("该订单已支付或失效!");
         }
         order.setState(Order.State.CANCEL);
         order.setCreationTime(order.getCreationTime()+"+"+String.valueOf(System.currentTimeMillis()));
@@ -103,7 +109,6 @@ public class OrderServiceImpl implements OrderService {
         goods.setInventory(1);
         goods.setSaleCount(-1);
         transactionService.modifyGoodsInfo(goods);
-        return true;
     }
 
     @Override

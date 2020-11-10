@@ -5,6 +5,7 @@ import com.qdbgame.newsplatform.dao.GoodsMapper;
 import com.qdbgame.newsplatform.entities.Goods;
 import com.qdbgame.newsplatform.entities.Order;
 import com.qdbgame.newsplatform.entities.ResponseCode;
+import com.qdbgame.newsplatform.tools.exception.ResultException;
 import com.qdbgame.newsplatform.tools.trade.BrowsePermissionTrade;
 import com.qdbgame.newsplatform.tools.trade.NewsTrade;
 import com.qdbgame.newsplatform.tools.trade.VoucherTrade;
@@ -49,9 +50,9 @@ public class TransactionServiceImpl implements TransactionService{
 
 
     @Override
-    public boolean addGoods(Goods goods) {
+    public void addGoods(Goods goods) {
         goods.setShelfTime(System.currentTimeMillis());
-        return goodsMapper.insert(goods);
+        goodsMapper.insert(goods);
     }
 
 
@@ -60,7 +61,7 @@ public class TransactionServiceImpl implements TransactionService{
     public Order buyGoods(Integer goodsId, Integer userId) {
         Goods goods = getGoodsInfo(goodsId);
         if(goods.getOwnId().equals(userId)){
-            return null;
+            throw new ResultException("不能购买自己挂售的商品！");
         }
         Order order = null;
         if(goods.getType().equals(Goods.Type.NEWS)){
@@ -75,23 +76,24 @@ public class TransactionServiceImpl implements TransactionService{
 
     @Override
     @GlobalTransactional
-    public boolean sellGoods(Integer itemId, Integer type,Integer price,Long startTime,Integer userId) {
+    public void sellGoods(Integer itemId, Integer type,Integer price,Long startTime,Integer userId) {
         if(type.equals(Goods.Type.NEWS)){
-            return newsTrade.sell(itemId,price,startTime,userId,newsService,this);
+            newsTrade.sell(itemId,price,startTime,userId,newsService,this);
         }else if(type.equals(Goods.Type.BP)){
-            return browsePermissionTrade.sell(itemId,price,startTime,userId,newsService,this);
+            browsePermissionTrade.sell(itemId,price,startTime,userId,newsService,this);
         }else if(type.equals(Goods.Type.VOUCHER)){
-            return voucherTrade.sell(itemId,price,startTime,userId,voucherService,this);
+            voucherTrade.sell(itemId,price,startTime,userId,voucherService,this);
+        }else{
+            throw new ResultException("未知的商品类型！");
         }
-        return false;
     }
 
     @Override
-    public boolean adminSellGoods(Integer type, Integer number,Integer price,Long startTime,Integer userId) {
-        if(type.equals(Goods.Type.VOUCHER)){
-            return voucherTrade.adminSell(userId,number,price,startTime,this);
+    public void adminSellGoods(Integer type, Integer number,Integer price,Long startTime,Integer userId) {
+        if(!type.equals(Goods.Type.VOUCHER)){
+            throw new ResultException("管理员不能挂售这种类型的商品！");
         }
-        return false;
+        voucherTrade.adminSell(userId,number,price,startTime,this);
     }
 
     @Override
@@ -105,7 +107,7 @@ public class TransactionServiceImpl implements TransactionService{
     }
 
     @Override
-    public boolean modifyGoodsInfo(Goods goods) {
+    public void modifyGoodsInfo(Goods goods) {
         Goods goods1 = getGoodsInfo(goods.getGoodsId());
         goods.setInventory(goods1.getInventory()+goods.getInventory());
         goods.setSaleCount(goods1.getSaleCount()+goods.getSaleCount());
@@ -114,7 +116,7 @@ public class TransactionServiceImpl implements TransactionService{
         }else{
             goods.setState(Goods.State.SELL_OUT);
         }
-        return goodsMapper.update(goods);
+        goodsMapper.update(goods);
     }
 
 }

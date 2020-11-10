@@ -21,12 +21,9 @@ public abstract class AbstractTrade<T> implements Trade{
     }
 
     @Override
-    public boolean sell(Integer itemId,Integer price,Long startTime, Integer userId, TradeModifyItem tradeModifyItem, TransactionService transactionService) {
+    public void sell(Integer itemId,Integer price,Long startTime, Integer userId, TradeModifyItem tradeModifyItem, TransactionService transactionService) {
         T t = sellToModifyItemInfo(itemId,userId,tradeModifyItem);
-        if(t==null){
-            return false;
-        }
-        return createGoods(t,price,startTime,userId,transactionService);
+        createGoods(t,price,startTime,userId,transactionService);
     }
 
     @Override
@@ -40,13 +37,12 @@ public abstract class AbstractTrade<T> implements Trade{
         modifyOrder.setState(Order.State.SUCCESS);
         Order order = orderService.modifyOrder(modifyOrder);
         paymentToModifyItemInfo(order.getItemId(),userId,tradeModifyItem);
-
         return paymentService.paymentOrder(order);
     }
 
     protected abstract T sellToModifyItemInfo(Integer itemId,Integer userId,TradeModifyItem tradeModifyItem);
 
-    protected abstract boolean createGoods(T t,Integer price,Long startTime,Integer userId,TransactionService transactionService);
+    protected abstract void createGoods(T t,Integer price,Long startTime,Integer userId,TransactionService transactionService);
 
     protected abstract void paymentToModifyItemInfo(Integer itemId,Integer userId,TradeModifyItem tradeModifyItem);
 

@@ -10,5 +10,5 @@ import com.qdbgame.newsplatform.service.TransactionService;
  * @date ：Created in 2020/10/23 10:40
  */
 public interface AdminTrade {
-    boolean adminSell(Integer adminId,Integer number,Integer price,Long startTime, TransactionService transactionService);
+    void adminSell(Integer adminId,Integer number,Integer price,Long startTime, TransactionService transactionService);
 }

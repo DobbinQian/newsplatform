@@ -20,7 +20,7 @@ public class NewsTrade extends AbstractTrade<News> {
     }
 
     @Override
-    protected boolean createGoods(News news, Integer price, Long startTime, Integer userId, TransactionService transactionService) {
+    protected void createGoods(News news, Integer price, Long startTime, Integer userId, TransactionService transactionService) {
         Goods goods = new Goods();
         goods.setName(news.getTitle());
         goods.setDescribe(news.getContext());
@@ -32,7 +32,7 @@ public class NewsTrade extends AbstractTrade<News> {
         goods.setStartTime(startTime);
         // TODO 结束时间是新闻创建时间的七天后
         goods.setPrice(price);
-        return transactionService.addGoods(goods);
+        transactionService.addGoods(goods);
     }
 
     @Override

@@ -23,11 +23,11 @@ public class BrowsePermissionTrade extends AbstractTrade<News> {
 
     @Override
     protected News sellToModifyItemInfo(Integer itemId, Integer userId, TradeModifyItem tradeModifyItem) {
-        return (News) tradeModifyItem.modifyItemInfo(itemId,News.State.RELEASING);
+        return (News) tradeModifyItem.modifyItemInfo(itemId,userId,News.State.RELEASING);
     }
 
     @Override
-    protected boolean createGoods(News news, Integer price, Long startTime, Integer userId, TransactionService transactionService) {
+    protected void createGoods(News news, Integer price, Long startTime, Integer userId, TransactionService transactionService) {
         Goods goods = new Goods();
         goods.setName(news.getTitle());
         goods.setDescribe(news.getContext());
@@ -39,7 +39,7 @@ public class BrowsePermissionTrade extends AbstractTrade<News> {
         goods.setStartTime(startTime);
         // TODO 结束时间是新闻创建时间的七天后
         goods.setPrice(price);
-        return transactionService.addGoods(goods);
+        transactionService.addGoods(goods);
     }
 
     @Override

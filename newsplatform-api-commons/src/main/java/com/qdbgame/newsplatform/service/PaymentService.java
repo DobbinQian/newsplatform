@@ -16,7 +16,7 @@ public interface PaymentService {
 
     void createBill(Bill bill);
 
-    boolean createBalance(Integer userId);
+    void createBalance(Integer userId);
 
     Bill getBill(Integer billId);
 

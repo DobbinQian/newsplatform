@@ -4,6 +4,7 @@ import com.qdbgame.newsplatform.dao.NewsMapper;
 import com.qdbgame.newsplatform.dao.ReviewMapper;
 import com.qdbgame.newsplatform.entities.News;
 import com.qdbgame.newsplatform.entities.Review;
+import com.qdbgame.newsplatform.tools.exception.ResultException;
 import io.seata.spring.annotation.GlobalTransactional;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
@@ -25,26 +26,26 @@ public class NewsServiceImpl implements NewsService{
 
 
     @Override
-    public boolean createNews(News news, Integer userId) {
+    public void createNews(News news, Integer userId) {
         if(news.getImage()==null){
             news.setImage("defaul.jpg");
         }
         news.setOwnId(userId);
         news.setCreationTime(System.currentTimeMillis());
         news.setState(News.State.REVIEWING);
-        return newsMapper.insert(news);
+        newsMapper.insert(news);
     }
 
     @Override
-    public boolean reviewNews(Review review, Integer userId) {
-        if(review.getState()== Review.State.PASS){
+    public void reviewNews(Review review, Integer userId) {
+        if(review.getState().equals(Review.State.PASS)){
             News news = new News();
             news.setNewsId(review.getNewsId());
             news.setState(News.State.DEFAULT);
             newsMapper.update(news);
         }
         review.setReviewUserId(userId);
-        return reviewMapper.insert(review);
+        reviewMapper.insert(review);
     }
 
     @Override
@@ -55,15 +56,15 @@ public class NewsServiceImpl implements NewsService{
     @Override
     public News getNewsInfo(Integer newsId, Integer userId) {
         News news = newsMapper.getNewsInfoById(newsId);
-        if(news.getOwnId()!=userId){
+        if(!news.getOwnId().equals(userId)){
             news.setContext("");
         }
         return news;
     }
 
     @Override
-    public boolean modifyNewsInfo(News news) {
-        return newsMapper.update(news);
+    public void modifyNewsInfo(News news) {
+        newsMapper.update(news);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class NewsServiceImpl implements NewsService{
 
         News news = newsMapper.getNewsInfoById(itemId);
         if(!news.getOwnId().equals(userId)){
-            return null;
+            throw new ResultException("非法操作,这不是用户ID:"+userId+"的新闻！");
         }
         news.setOwnId(userId);
         news.setNewsId(itemId);
@@ -90,7 +91,7 @@ public class NewsServiceImpl implements NewsService{
     }
 
     @Override
-    public boolean createItem(Integer userId) {
-        return false;
+    public void createItem(Integer userId) {
+
     }
 }

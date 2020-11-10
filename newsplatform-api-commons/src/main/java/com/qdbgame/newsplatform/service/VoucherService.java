@@ -10,5 +10,5 @@ import com.qdbgame.newsplatform.tools.trade.TradeModifyItem;
 public interface VoucherService extends TradeModifyItem {
     boolean voucherCheck(Integer userId);
 
-    boolean modifyVoucherInfo(Voucher voucher);
+    void modifyVoucherInfo(Voucher voucher);
 }

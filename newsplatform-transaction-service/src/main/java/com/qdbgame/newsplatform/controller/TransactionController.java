@@ -39,9 +39,7 @@ public class TransactionController {
                                     Integer price,
                                     Long startTime,
                                     @RequestHeader("userId")Integer userId){
-        if(!transactionService.adminSellGoods(type,number,price,startTime,userId)){
-            return ServerResponse.createByError("出售失败");
-        }
+        transactionService.adminSellGoods(type,number,price,startTime,userId);
         return ServerResponse.createByCheckSuccess();
     }
 
@@ -51,9 +49,7 @@ public class TransactionController {
                              Integer price,
                              Long startTime,
                              @RequestHeader("userId") Integer userId){
-        if(!transactionService.sellGoods(itemId,type,price,startTime,userId)){
-            return ServerResponse.createByError("出售失败");
-        }
+        transactionService.sellGoods(itemId,type,price,startTime,userId);
         return ServerResponse.createByCheckSuccess();
     }
 
@@ -61,9 +57,6 @@ public class TransactionController {
     public ServerResponse buy(Integer goodsId,
                                @RequestHeader("userId") Integer userId){
         Order order = transactionService.buyGoods(goodsId,userId);
-        if(order==null){
-            return ServerResponse.createByError("购买失败");
-        }
         return ServerResponse.createBySuccess("购买成功",order);
     }
 

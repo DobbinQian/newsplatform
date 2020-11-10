@@ -10,5 +10,5 @@ import com.qdbgame.newsplatform.tools.trade.TradeModifyItem;
 public interface BrowsePermissionService {
     boolean browsePermissionCheck(Integer userId, Integer newsId);
 
-    boolean addBrowsePermission(BrowsePermission browsePermission);
+    void addBrowsePermission(BrowsePermission browsePermission);
 }

@@ -13,6 +13,6 @@ import com.qdbgame.newsplatform.service.TransactionService;
  */
 public interface Trade {
     Order buy(Goods goods, Integer userId, TransactionService transactionService,OrderService orderService);
-    boolean sell(Integer itemId,Integer price,Long startTime,Integer userId,TradeModifyItem tradeModifyItem,TransactionService transactionService);
+    void sell(Integer itemId,Integer price,Long startTime,Integer userId,TradeModifyItem tradeModifyItem,TransactionService transactionService);
     Bill payment(Integer orderId, Integer userId, OrderService orderService, PaymentService paymentService,TradeModifyItem tradeModifyItem);
 }

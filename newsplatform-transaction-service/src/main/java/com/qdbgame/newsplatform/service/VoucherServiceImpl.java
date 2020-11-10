@@ -2,6 +2,7 @@ package com.qdbgame.newsplatform.service;
 
 import com.qdbgame.newsplatform.dao.VoucherMapper;
 import com.qdbgame.newsplatform.entities.Voucher;
+import com.qdbgame.newsplatform.tools.exception.ResultException;
 import org.apache.dubbo.config.annotation.DubboService;
 
 import javax.annotation.Resource;
@@ -26,8 +27,8 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
     @Override
-    public boolean modifyVoucherInfo(Voucher voucher) {
-        return voucherMapper.update(voucher);
+    public void modifyVoucherInfo(Voucher voucher) {
+        voucherMapper.update(voucher);
     }
 
     @Override
@@ -41,15 +42,20 @@ public class VoucherServiceImpl implements VoucherService {
 
     @Override
     public Object modifyItemInfo(Integer itemId, Integer userId, Integer state) {
-        return null;
+        //TODO 判断是否是该用户的交易凭证
+        Voucher voucher = new Voucher();
+        voucher.setVoucherId(itemId);
+        voucher.setState(state);
+        modifyVoucherInfo(voucher);
+        return voucher;
     }
 
     @Override
-    public boolean createItem(Integer userId) {
+    public void createItem(Integer userId) {
         Voucher voucher = new Voucher();
         voucher.setUserId(userId);
         voucher.setCreationTime(System.currentTimeMillis());
         voucher.setState(Voucher.State.DEFAULT);
-        return voucherMapper.insert(voucher);
+        voucherMapper.insert(voucher);
     }
 }

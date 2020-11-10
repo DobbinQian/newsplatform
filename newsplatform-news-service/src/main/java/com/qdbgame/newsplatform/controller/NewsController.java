@@ -26,9 +26,7 @@ public class NewsController {
     public ServerResponse createNews(@RequestHeader(value = "userId")String userId,
                                      @RequestBody News news){
 
-        if(!newsService.createNews(news,Integer.valueOf(userId))){
-            return ServerResponse.createByError("创建新闻失败");
-        }
+        newsService.createNews(news,Integer.valueOf(userId));
         return ServerResponse.createByCheckSuccess();
     }
 
@@ -42,9 +40,7 @@ public class NewsController {
     public ServerResponse reviewNews(@RequestHeader(value = "userId")String userId,
                                      @RequestBody Review review){
         // TODO 判断是否是管理员
-        if(!newsService.reviewNews(review,Integer.valueOf(userId))){
-            return ServerResponse.createByError("评审失败");
-        }
+        newsService.reviewNews(review,Integer.valueOf(userId));
         return ServerResponse.createByCheckSuccess();
     }
 
@@ -86,10 +82,7 @@ public class NewsController {
     public ServerResponse getNewsInfo(@RequestHeader(value = "userId")Integer userId,
                                       @PathVariable Integer newsId){
         News news = newsService.getNewsInfo(newsId,userId);
-        if(news == null){
-            return ServerResponse.createByError("获取新闻内容失败");
-        }
-        return ServerResponse.createBySuccess("获取新闻内容成功",news);
+        return ServerResponse.createBySuccess("新闻内容",news);
     }
 
 

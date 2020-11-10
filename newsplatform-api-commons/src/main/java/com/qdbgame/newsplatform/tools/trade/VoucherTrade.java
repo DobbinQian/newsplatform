@@ -14,7 +14,7 @@ public class VoucherTrade extends AbstractAdminTrade<Voucher> {
 
 
     @Override
-    protected boolean adminCreateGoods(Integer adminId, Integer number,Integer price,Long startTime, TransactionService transactionService) {
+    protected void adminCreateGoods(Integer adminId, Integer number,Integer price,Long startTime, TransactionService transactionService) {
         Goods goods = new Goods();
         goods.setName("交易凭证");
         goods.setDescribe("有了这个你才能进行新闻发布权的交易");
@@ -26,7 +26,7 @@ public class VoucherTrade extends AbstractAdminTrade<Voucher> {
         goods.setStartTime(startTime);
         // TODO 结束时间是开始时间之后的第七天
         goods.setPrice(price);
-        return transactionService.addGoods(goods);
+        transactionService.addGoods(goods);
     }
 
     @Override
@@ -37,11 +37,11 @@ public class VoucherTrade extends AbstractAdminTrade<Voucher> {
 
     @Override
     protected Voucher sellToModifyItemInfo(Integer itemId, Integer userId, TradeModifyItem tradeModifyItem) {
-        return (Voucher) tradeModifyItem.modifyItemInfo(itemId,Voucher.State.SELLING);
+        return (Voucher) tradeModifyItem.modifyItemInfo(itemId,userId,Voucher.State.SELLING);
     }
 
     @Override
-    protected boolean createGoods(Voucher voucher, Integer price, Long startTime, Integer userId, TransactionService transactionService) {
+    protected void createGoods(Voucher voucher, Integer price, Long startTime, Integer userId, TransactionService transactionService) {
         Goods goods = new Goods();
         goods.setName("交易凭证");
         goods.setDescribe("有了这个你才能进行新闻发布权的交易");
@@ -53,7 +53,7 @@ public class VoucherTrade extends AbstractAdminTrade<Voucher> {
         goods.setStartTime(startTime);
         // TODO 结束时间是开始时间之后的第七天
         goods.setPrice(price);
-        return transactionService.addGoods(goods);
+        transactionService.addGoods(goods);
     }
 
 
